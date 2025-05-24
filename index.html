@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Sinh Nhật Xíu</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom right, #ffe0f0, #fff0f5);
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .confetti {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .card-container {
+      perspective: 2000px;
+      z-index: 2;
+    }
+    .card {
+      width: 320px;
+      height: 220px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateY(0);
+      transition: transform 1s;
+      cursor: pointer;
+    }
+    .card.open {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .front {
+      background: linear-gradient(135deg, #ff7096, #ffa5b7);
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: white;
+    }
+    .back {
+      background: #fff;
+      transform: rotateY(180deg);
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #333;
+    }
+    .back h2 {
+      color: #ff4d6d;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .back p {
+      font-style: italic;
+    }
+    @keyframes confetti {
+      0% { transform: translateY(-10%) rotate(0); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    .dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, #ff6bcb, #ffc8dd);
+      border-radius: 50%;
+      animation: confetti 5s linear infinite;
+    }
+  </style>
+</head>
+<body>
+  <audio id="birthday-audio" src="https://cdn.pixabay.com/audio/2022/03/15/audio_20b162eb83.mp3"></audio>
+
+  <div class="confetti" id="confetti"></div>
+
+  <div class="card-container">
+    <div class="card" id="card">
+      <div class="card-face front">
+        🎁 Click để mở thiệp
+      </div>
+      <div class="card-face back">
+        <div>
+          <h2>🎉Háp bi niu dia!🎂</h2>
+          <p>Chúc Xíu một ngày thật đặc biệt với thật nhiều niềm zui, tiếng cười và những điều ngọt ngào nhất!</p>
+          <p></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const card = document.getElementById('card');
+    const confetti = document.getElementById('confetti');
+    const audio = document.getElementById('birthday-audio');
+
+    card.addEventListener('click', () => {
+      card.classList.toggle('open');
+      if (card.classList.contains('open')) {
+        generateConfetti();
+        audio.play();
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    });
+
+    function generateConfetti() {
+      confetti.innerHTML = '';
+      for (let i = 0; i < 50; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        dot.style.left = Math.random() * 100 + 'vw';
+        dot.style.animationDelay = Math.random() * 5 + 's';
+        dot.style.background = `radial-gradient(circle, hsl(${Math.random()*360}, 100%, 75%), #fff)`;
+        confetti.appendChild(dot);
+      }
+    }
+  </script>
+</body>
+</html>
